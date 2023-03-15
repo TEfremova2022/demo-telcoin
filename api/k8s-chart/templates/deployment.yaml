@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.applicationName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.applicationName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.applicationName }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "secret-dev-rds"
+      - name: apiexchange-storage
+        emptyDir: {}  
+      containers:
+      - name: {{ .Values.applicationName }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: api
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+        - mountPath: /var/lib/exchange
+          name: apiexchange-storage
+        env:
+         - name: DATABASE
+           value: {{ .Values.databasename }}
+         - name: DB
+           value: postgres://olga_g:aytJft852Wq@terraform-20230108233818074400000001.cy32g4owxpjc.us-east-1.rds.amazonaws.com:5432/exchange_rds_dev
+         - name: DB_USER
+           valueFrom:
+             secretKeyRef:
+               name: {{ .Values.secretName }}
+               key: username
+         - name: DB_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: {{ .Values.secretName }}
+               key: password
