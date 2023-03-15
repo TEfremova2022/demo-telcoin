@@ -1,0 +1,9 @@
+version = 1.0.0
+replicas = 1
+namespace = exchange-dev
+hostname = http://dev-exchange-22jcentos.exchangeweb.net	
+secretname = secret-dev-rds
+rolearn = api-token-access-exchange
+databasename  = exchange_rds_dev
+service_account = exchange
+pgdatabase = terraform-20230108233818074400000001.cy32g4owxpjc.us-east-1.rds.amazonaws.com:5432/exchange_rds_dev

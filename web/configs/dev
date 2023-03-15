@@ -1,0 +1,4 @@
+version = 1.0
+replicas = 1
+namespace = exchange-dev
+hostname = dev-exchange-22jcentos.exchangeweb.net

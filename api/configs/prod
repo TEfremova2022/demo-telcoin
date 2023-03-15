@@ -1,0 +1,9 @@
+version = 0.1
+replicas = 3
+namespace = exchange-prod
+hostname = http://prod-exchange-22jcentos.exchangeweb.net
+secretname = secret-prod-rds
+rolearn = api-token-access-exchange-prod
+databasename = exchange_rds_prod
+pgdatabas = postgres://olga_g:ytsdgv541GD2@terraform-20230108233818074400000001.cy32g4owxpjc.us-east-1.rds.amazonaws.com:5432/exchange_rds_prod
+service_account = exchange

@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+    #nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/hsts: "false"
+    #kubernetes.io/ingress.class: nginx
+    #external-dns.alpha.kubernetes.io/hostname: {{ .Values.hostname }}
+  name: "{{ .Values.applicationName }}-ingress"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ .Values.applicationName }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.hostname }}
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: "{{ .Values.applicationName }}-svc"
+              port:
+                number: {{ .Values.port }}

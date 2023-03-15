@@ -1,0 +1,4 @@
+version = 0.1
+replicas = 3
+namespace = exchange-prod
+hostname = prod-exchange-22jcentos.exchangeweb.net
